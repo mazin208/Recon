@@ -159,8 +159,8 @@ installGitCloneTools() {
 	git clone https://github.com/devanshbatham/FavFreak.git
 	pip3 install -r $SCRIPTPATH/tools/FavFreak/requirements.txt
 	bannerInstall "GitHub Search"
-	git clone https://github.com/gwen001/github-search.git
-	pip3 install -r $SCRIPTPATH/tools/github-search/requirements2.txt
+	git clone https://github.com/gwen001/github-search
+	pip3 install -r $SCRIPTPATH/tools/github-search/requirements.txt
 	bannerInstall "ParamSpider"
 	git clone https://github.com/devanshbatham/ParamSpider.git
 	pip3 install -r $SCRIPTPATH/tools/ParamSpider/requirements.txt
