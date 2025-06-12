@@ -1140,7 +1140,7 @@ favAnalysis $OUTFOLDER/subdomains/alive.txt $OUTFOLDER/favicon-analysis
 # |G|i|t|H|u|b| |D|o|r|k|s|
 # +-+-+-+-+-+-+ +-+-+-+-+-+
 
-ghDork $OUTFOLDER/dorks/github-dorks
+#ghDork $OUTFOLDER/dorks/github-dorks
 
 #  +-+-+-+-+-+-+-+-+-+-+-+
 # |S|c|r|e|e|n|s|h|o|t|s|
