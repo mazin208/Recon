@@ -113,7 +113,7 @@ installGoTools() {
 	bannerInstall "Metabigor"
 	go install github.com/j3ssie/metabigor@latest
 	bannerInstall "Cf-check"
-	$ go install github.com/dwisiswant0/cf-check@latest
+	go install github.com/dwisiswant0/cf-check@latest
 	bannerInstall "Naabu"
 	if [ "$os" == "kali" ] || [ "$os" == "debian" ] || [ "$os" == "parrot" ]; then
 		sudo apt install -y libpcap-dev
@@ -201,7 +201,8 @@ installPip() {
 
 installFindomain() {
 	bannerInstall "Findomain"
-	wget https://github.com/findomain/findomain/releases/latest/download/findomain-linux
+	wget https://github.com/Findomain/Findomain/releases/download/9.0.4/findomain-linux.zip
+ 	unzip findomain-linux.zip
 	chmod +x $SCRIPTPATH/findomain-linux
 	sudo mv $SCRIPTPATH/findomain-linux /usr/local/bin/findomain
 }
@@ -209,12 +210,7 @@ installFindomain() {
 
 installKnockpy() {
 	bannerInstall "Knockpy"
-	git clone https://github.com/guelfoweb/knock.git
-	cd $SCRIPTPATH/knock
-	sudo python3 setup.py install
-	sudo rm -rf $SCRIPTPATH/knock
-	[[ -d $SCRIPTPATH/knockpy.egg-info ]] && sudo rm -rf $SCRIPTPATH/knockpy.egg-info
-	cd $SCRIPTPATH
+	pip3 install knock-subdomains
 }
 
 
