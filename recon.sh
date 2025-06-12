@@ -317,7 +317,7 @@ subdomainEnumeration() {
 			findomain -q --target $target >> $output_folder/subdomains.txt || $GOPATH/bin/findomain -q --target $target >> $output_folder/subdomains.txt
 			echo " ✅"
 			echo -e -n "\033[36m>>>\033[35m Running SubDomainizer 🔍\033[m"
-			python3 $SCRIPTPATH/tools/SubDomainizer.py -u $target -o $SCRIPTPATH/SubDomainizer$domain.txt >> $OUTFOLDER/subdomains/SubDomainizer-$domain.txt
+			python3 $SCRIPTPATH/tools/SubDomainizer.py -k -u $target -o $SCRIPTPATH/SubDomainizer$domain.txt >> $OUTFOLDER/subdomains/SubDomainizer-$domain.txt
 			echo " ✅"
 			echo -e -n "\n\033[36m>>>\033[35m Running sublist3r 🔍\033[m"
 			sublist3r -d $target -o $SCRIPTPATH/sublist3r-$domain.txt > $SCRIPTPATH/temp.txt
@@ -326,7 +326,7 @@ subdomainEnumeration() {
 			rm $SCRIPTPATH/temp.txt
 			echo " ✅"
 			echo -e -n "\n\033[36m>>>\033[35m Running Knockpy 🔍\033[m"
-			knockpy $target -w $wordlist -o $output_folder/knockpy/ -t 5 > $SCRIPTPATH/knocktemp
+			knockpy -d $target -w $wordlist -o $output_folder/knockpy/ -t 5 > $SCRIPTPATH/knocktemp
 			rm $SCRIPTPATH/knocktemp
 			echo " ✅"
 			if [ "$GHAPIKEY" != "False" ]; then
@@ -370,7 +370,7 @@ subdomainTakeover() {
 		else
 			echo -e "\n\033[1;36m[+] Subdomain Takeover 🔎\033[m"
 		fi
-		subjack -w $list -t 100 -timeout 30 -o $output_folder/takeover.txt -ssl || $GOPATH/bin/subjack -w $list -t 100 -timeout 30 -o $output_folder/takeover.txt -ssl
+		nuclei -l $list -tags takeover -o $output_folder/takeover.txt || /usr/local/go/bin/nuclei -l $list -tags takeover -o $output_folder/takeover.txt
 		if [ -f "$output_folder/takeover.txt" ]; then
 			stofound="$(cat $output_folder/takeover.txt | wc -l)"
 			echo -e "\033[32m[+] $stofound vulnerable domains were found\033[m"
@@ -1111,7 +1111,7 @@ dnsLookup $DOMAINS $OUTFOLDER
 # |W|a|f| |D|e|t|e|c|t|i|o|n|
 # +-+-+-+ +-+-+-+-+-+-+-+-+-+
 
-wafDetect $OUTFOLDER/subdomains/alive.txt
+#wafDetect $OUTFOLDER/subdomains/alive.txt
 
 # +-+-+-+-+-+-+-+ +-+-+-+-+-+-+-+-+
 # |F|a|v|i|c|o|n| |A|n|a|l|y|s|i|s|
@@ -1123,18 +1123,18 @@ favAnalysis $OUTFOLDER/subdomains/alive.txt $OUTFOLDER/favicon-analysis
 # |D|i|r|e|c|t|o|r|y| |F|u|z|z|i|n|g|
 # +-+-+-+-+-+-+-+-+-+ +-+-+-+-+-+-+-+
 
-dirFuzz $OUTFOLDER/subdomains/alive.txt $OUTFOLDER/fuzz
+#dirFuzz $OUTFOLDER/subdomains/alive.txt $OUTFOLDER/fuzz
 
 # +-+-+-+-+ +-+-+-+-+-+
 # |C|r|e|d| |S|t|u|f|f|
 # +-+-+-+-+ +-+-+-+-+-+
-credStuff 500 $OUTFOLDER/dorks
+#credStuff 500 $OUTFOLDER/dorks
 
 # +-+-+-+-+-+-+ +-+-+-+-+-+-+-+
 # |G|o|o|g|l|e| |H|a|c|k|i|n|g|
 # +-+-+-+-+-+-+ +-+-+-+-+-+-+-+
 
-googleHacking $OUTFOLDER/dorks/google-dorks
+#googleHacking $OUTFOLDER/dorks/google-dorks
 
 # +-+-+-+-+-+-+ +-+-+-+-+-+
 # |G|i|t|H|u|b| |D|o|r|k|s|
@@ -1146,27 +1146,27 @@ ghDork $OUTFOLDER/dorks/github-dorks
 # |S|c|r|e|e|n|s|h|o|t|s|
 # +-+-+-+-+-+-+-+-+-+-+-+
 
-screenshots $OUTFOLDER/subdomains/alive.txt $OUTFOLDER/$domain-screenshots
+#screenshots $OUTFOLDER/subdomains/alive.txt $OUTFOLDER/$domain-screenshots
 
  # +-+-+-+-+ +-+-+-+-+-+-+-+-+
  # |P|o|r|t| |S|c|a|n|n|i|n|g|
  # +-+-+-+-+ +-+-+-+-+-+-+-+-+
 
- portscan $DOMAINS $OUTFOLDER/DNS/ip_only.txt $OUTFOLDER/portscan/
+ #portscan $DOMAINS $OUTFOLDER/DNS/ip_only.txt $OUTFOLDER/portscan/
 
  # +-+-+-+-+-+-+-+-+-+ +-+-+-+-+-+-+-+-+-+-+-+
  # |E|n|d|p|o|i|n|t|s| |e|n|u|m|e|r|a|t|i|o|n|
  # +-+-+-+-+-+-+-+-+-+ +-+-+-+-+-+-+-+-+-+-+-+
 
- linkDiscovery $OUTFOLDER/subdomains/alive.txt $OUTFOLDER/link-discovery
- endpointsEnumeration $OUTFOLDER/subdomains/alive.txt $OUTFOLDER/link-discovery
+ #linkDiscovery $OUTFOLDER/subdomains/alive.txt $OUTFOLDER/link-discovery
+ #endpointsEnumeration $OUTFOLDER/subdomains/alive.txt $OUTFOLDER/link-discovery
 
 # +-+-+-+-+-+-+-+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 # |F|i|n|d|i|n|g| |v|u|l|n|e|r|a|b|i|l|i|t|i|e|s|
 # +-+-+-+-+-+-+-+ +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 # I'm only using the standard nuclei templates, but you can create and add them in ~/nuclei-templates
 
-findVuln $OUTFOLDER/subdomains/alive.txt $OUTFOLDER/vuln
+#findVuln $OUTFOLDER/subdomains/alive.txt $OUTFOLDER/vuln
 
 org="$(echo $domain | cut -d '.' -f1)"
 if [ -e $OUTFOLDER/asn/$org.txt ]; then
